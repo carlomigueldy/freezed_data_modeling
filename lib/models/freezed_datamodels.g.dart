@@ -24,6 +24,9 @@ _$_Address _$_$_AddressFromJson(Map<String, dynamic> json) {
     suite: json['suite'] as String? ?? '',
     city: json['city'] as String? ?? '',
     zipcode: json['zipcode'] as String? ?? '',
+    geo: json['geo'] == null
+        ? null
+        : Geo.fromJson(json['geo'] as Map<String, dynamic>),
   );
 }
 
@@ -33,6 +36,7 @@ Map<String, dynamic> _$_$_AddressToJson(_$_Address instance) =>
       'suite': instance.suite,
       'city': instance.city,
       'zipcode': instance.zipcode,
+      'geo': instance.geo,
     };
 
 _$_Company _$_$_CompanyFromJson(Map<String, dynamic> json) {
@@ -55,14 +59,10 @@ _$_User _$_$_UserFromJson(Map<String, dynamic> json) {
     id: json['id'] as int,
     username: json['username'] as String,
     email: json['email'] as String,
-    address: json['address'] == null
-        ? null
-        : Address.fromJson(json['address'] as Map<String, dynamic>),
+    address: User._addressFromJson(json['address'] as Map<String, dynamic>?),
     phone: json['phone'] as String? ?? '',
     website: json['website'] as String? ?? '',
-    company: json['company'] == null
-        ? null
-        : Company.fromJson(json['company'] as Map<String, dynamic>),
+    company: User._companyFromJson(json['company'] as Map<String, dynamic>?),
   );
 }
 
@@ -70,8 +70,8 @@ Map<String, dynamic> _$_$_UserToJson(_$_User instance) => <String, dynamic>{
       'id': instance.id,
       'username': instance.username,
       'email': instance.email,
-      'address': instance.address,
+      'address': User._addressToJson(instance.address),
       'phone': instance.phone,
       'website': instance.website,
-      'company': instance.company,
+      'company': User._companyToJson(instance.company),
     };

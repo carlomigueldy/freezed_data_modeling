@@ -47,6 +47,8 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void appendUsername(int index) {
+    print(_users[index].toJson());
+
     setState(() {
       _users[index] = _users[index].copyWith(
         username: '${_users[index].username} CLICKED',

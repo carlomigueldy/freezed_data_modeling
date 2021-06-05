@@ -185,12 +185,14 @@ class _$AddressTearOff {
       {String street = '',
       String suite = '',
       String city = '',
-      String zipcode = ''}) {
+      String zipcode = '',
+      Geo? geo}) {
     return _Address(
       street: street,
       suite: suite,
       city: city,
       zipcode: zipcode,
+      geo: geo,
     );
   }
 
@@ -208,6 +210,7 @@ mixin _$Address {
   String get suite => throw _privateConstructorUsedError;
   String get city => throw _privateConstructorUsedError;
   String get zipcode => throw _privateConstructorUsedError;
+  Geo? get geo => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -218,7 +221,10 @@ mixin _$Address {
 abstract class $AddressCopyWith<$Res> {
   factory $AddressCopyWith(Address value, $Res Function(Address) then) =
       _$AddressCopyWithImpl<$Res>;
-  $Res call({String street, String suite, String city, String zipcode});
+  $Res call(
+      {String street, String suite, String city, String zipcode, Geo? geo});
+
+  $GeoCopyWith<$Res>? get geo;
 }
 
 /// @nodoc
@@ -235,6 +241,7 @@ class _$AddressCopyWithImpl<$Res> implements $AddressCopyWith<$Res> {
     Object? suite = freezed,
     Object? city = freezed,
     Object? zipcode = freezed,
+    Object? geo = freezed,
   }) {
     return _then(_value.copyWith(
       street: street == freezed
@@ -253,7 +260,22 @@ class _$AddressCopyWithImpl<$Res> implements $AddressCopyWith<$Res> {
           ? _value.zipcode
           : zipcode // ignore: cast_nullable_to_non_nullable
               as String,
+      geo: geo == freezed
+          ? _value.geo
+          : geo // ignore: cast_nullable_to_non_nullable
+              as Geo?,
     ));
+  }
+
+  @override
+  $GeoCopyWith<$Res>? get geo {
+    if (_value.geo == null) {
+      return null;
+    }
+
+    return $GeoCopyWith<$Res>(_value.geo!, (value) {
+      return _then(_value.copyWith(geo: value));
+    });
   }
 }
 
@@ -262,7 +284,11 @@ abstract class _$AddressCopyWith<$Res> implements $AddressCopyWith<$Res> {
   factory _$AddressCopyWith(_Address value, $Res Function(_Address) then) =
       __$AddressCopyWithImpl<$Res>;
   @override
-  $Res call({String street, String suite, String city, String zipcode});
+  $Res call(
+      {String street, String suite, String city, String zipcode, Geo? geo});
+
+  @override
+  $GeoCopyWith<$Res>? get geo;
 }
 
 /// @nodoc
@@ -280,6 +306,7 @@ class __$AddressCopyWithImpl<$Res> extends _$AddressCopyWithImpl<$Res>
     Object? suite = freezed,
     Object? city = freezed,
     Object? zipcode = freezed,
+    Object? geo = freezed,
   }) {
     return _then(_Address(
       street: street == freezed
@@ -298,6 +325,10 @@ class __$AddressCopyWithImpl<$Res> extends _$AddressCopyWithImpl<$Res>
           ? _value.zipcode
           : zipcode // ignore: cast_nullable_to_non_nullable
               as String,
+      geo: geo == freezed
+          ? _value.geo
+          : geo // ignore: cast_nullable_to_non_nullable
+              as Geo?,
     ));
   }
 }
@@ -306,7 +337,11 @@ class __$AddressCopyWithImpl<$Res> extends _$AddressCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_Address implements _Address {
   const _$_Address(
-      {this.street = '', this.suite = '', this.city = '', this.zipcode = ''});
+      {this.street = '',
+      this.suite = '',
+      this.city = '',
+      this.zipcode = '',
+      this.geo});
 
   factory _$_Address.fromJson(Map<String, dynamic> json) =>
       _$_$_AddressFromJson(json);
@@ -323,10 +358,12 @@ class _$_Address implements _Address {
   @JsonKey(defaultValue: '')
   @override
   final String zipcode;
+  @override
+  final Geo? geo;
 
   @override
   String toString() {
-    return 'Address(street: $street, suite: $suite, city: $city, zipcode: $zipcode)';
+    return 'Address(street: $street, suite: $suite, city: $city, zipcode: $zipcode, geo: $geo)';
   }
 
   @override
@@ -340,7 +377,10 @@ class _$_Address implements _Address {
             (identical(other.city, city) ||
                 const DeepCollectionEquality().equals(other.city, city)) &&
             (identical(other.zipcode, zipcode) ||
-                const DeepCollectionEquality().equals(other.zipcode, zipcode)));
+                const DeepCollectionEquality()
+                    .equals(other.zipcode, zipcode)) &&
+            (identical(other.geo, geo) ||
+                const DeepCollectionEquality().equals(other.geo, geo)));
   }
 
   @override
@@ -349,7 +389,8 @@ class _$_Address implements _Address {
       const DeepCollectionEquality().hash(street) ^
       const DeepCollectionEquality().hash(suite) ^
       const DeepCollectionEquality().hash(city) ^
-      const DeepCollectionEquality().hash(zipcode);
+      const DeepCollectionEquality().hash(zipcode) ^
+      const DeepCollectionEquality().hash(geo);
 
   @JsonKey(ignore: true)
   @override
@@ -364,7 +405,11 @@ class _$_Address implements _Address {
 
 abstract class _Address implements Address {
   const factory _Address(
-      {String street, String suite, String city, String zipcode}) = _$_Address;
+      {String street,
+      String suite,
+      String city,
+      String zipcode,
+      Geo? geo}) = _$_Address;
 
   factory _Address.fromJson(Map<String, dynamic> json) = _$_Address.fromJson;
 
@@ -376,6 +421,8 @@ abstract class _Address implements Address {
   String get city => throw _privateConstructorUsedError;
   @override
   String get zipcode => throw _privateConstructorUsedError;
+  @override
+  Geo? get geo => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$AddressCopyWith<_Address> get copyWith =>
@@ -579,10 +626,12 @@ class _$UserTearOff {
       {required int id,
       required String username,
       required String email,
-      Address? address,
+      @JsonKey(fromJson: User._addressFromJson, toJson: User._addressToJson)
+          Address? address,
       String phone = '',
       String website = '',
-      Company? company}) {
+      @JsonKey(fromJson: User._companyFromJson, toJson: User._companyToJson)
+          Company? company}) {
     return _User(
       id: id,
       username: username,
@@ -607,9 +656,11 @@ mixin _$User {
   int get id => throw _privateConstructorUsedError;
   String get username => throw _privateConstructorUsedError;
   String get email => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: User._addressFromJson, toJson: User._addressToJson)
   Address? get address => throw _privateConstructorUsedError;
   String get phone => throw _privateConstructorUsedError;
   String get website => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: User._companyFromJson, toJson: User._companyToJson)
   Company? get company => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -625,10 +676,12 @@ abstract class $UserCopyWith<$Res> {
       {int id,
       String username,
       String email,
-      Address? address,
+      @JsonKey(fromJson: User._addressFromJson, toJson: User._addressToJson)
+          Address? address,
       String phone,
       String website,
-      Company? company});
+      @JsonKey(fromJson: User._companyFromJson, toJson: User._companyToJson)
+          Company? company});
 
   $AddressCopyWith<$Res>? get address;
   $CompanyCopyWith<$Res>? get company;
@@ -716,10 +769,12 @@ abstract class _$UserCopyWith<$Res> implements $UserCopyWith<$Res> {
       {int id,
       String username,
       String email,
-      Address? address,
+      @JsonKey(fromJson: User._addressFromJson, toJson: User._addressToJson)
+          Address? address,
       String phone,
       String website,
-      Company? company});
+      @JsonKey(fromJson: User._companyFromJson, toJson: User._companyToJson)
+          Company? company});
 
   @override
   $AddressCopyWith<$Res>? get address;
@@ -781,15 +836,18 @@ class __$UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_User implements _User {
+class _$_User extends _User {
   const _$_User(
       {required this.id,
       required this.username,
       required this.email,
-      this.address,
+      @JsonKey(fromJson: User._addressFromJson, toJson: User._addressToJson)
+          this.address,
       this.phone = '',
       this.website = '',
-      this.company});
+      @JsonKey(fromJson: User._companyFromJson, toJson: User._companyToJson)
+          this.company})
+      : super._();
 
   factory _$_User.fromJson(Map<String, dynamic> json) =>
       _$_$_UserFromJson(json);
@@ -801,6 +859,7 @@ class _$_User implements _User {
   @override
   final String email;
   @override
+  @JsonKey(fromJson: User._addressFromJson, toJson: User._addressToJson)
   final Address? address;
   @JsonKey(defaultValue: '')
   @override
@@ -809,6 +868,7 @@ class _$_User implements _User {
   @override
   final String website;
   @override
+  @JsonKey(fromJson: User._companyFromJson, toJson: User._companyToJson)
   final Company? company;
 
   @override
@@ -861,15 +921,18 @@ class _$_User implements _User {
   }
 }
 
-abstract class _User implements User {
+abstract class _User extends User {
   const factory _User(
       {required int id,
       required String username,
       required String email,
-      Address? address,
+      @JsonKey(fromJson: User._addressFromJson, toJson: User._addressToJson)
+          Address? address,
       String phone,
       String website,
-      Company? company}) = _$_User;
+      @JsonKey(fromJson: User._companyFromJson, toJson: User._companyToJson)
+          Company? company}) = _$_User;
+  const _User._() : super._();
 
   factory _User.fromJson(Map<String, dynamic> json) = _$_User.fromJson;
 
@@ -880,12 +943,14 @@ abstract class _User implements User {
   @override
   String get email => throw _privateConstructorUsedError;
   @override
+  @JsonKey(fromJson: User._addressFromJson, toJson: User._addressToJson)
   Address? get address => throw _privateConstructorUsedError;
   @override
   String get phone => throw _privateConstructorUsedError;
   @override
   String get website => throw _privateConstructorUsedError;
   @override
+  @JsonKey(fromJson: User._companyFromJson, toJson: User._companyToJson)
   Company? get company => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
